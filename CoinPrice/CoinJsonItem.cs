@@ -22,5 +22,6 @@ namespace CoinPrice
 		public string percent_change_24h { get; set; }
 		public string percent_change_7d { get; set; }
 		public string last_updated { get; set; }
+		public string error { get; set; }
 	}
 }

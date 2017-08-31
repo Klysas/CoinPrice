@@ -33,20 +33,7 @@ namespace CoinPrice
 
 		private async void button_Click(object sender, RoutedEventArgs e)
 		{
-			var client = new RestClient();
-			client.BaseUrl = new Uri("https://api.coinmarketcap.com/v1/ticker/");
 
-			var request = new RestRequest();
-			request.RequestFormat = RestSharp.DataFormat.Json;
-			request.Resource = "bitcoin/?convert=EUR";
-
-			var response = client.Execute(request);
-
-			var items = JsonConvert.DeserializeObject<List<CoinJsonItem>>(response.Content);
-
-
-
-			Console.WriteLine(response);
 		}
 
 		private void ModifyCoin_Click(object sender, RoutedEventArgs e)
