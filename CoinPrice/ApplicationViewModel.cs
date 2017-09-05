@@ -18,11 +18,10 @@ namespace CoinPrice
 		public ApplicationViewModel()
 		{
 			// Add available pages
-			//PageViewModels.Add(new LicenseViewModel());
-
+			PageViewModels.Add(new ContentViewModel());
 
 			// Set starting page
-			//CurrentPageViewModel = PageViewModels[1];
+			CurrentPageViewModel = PageViewModels[0];
 		}
 
 		#region Properties / Commands
