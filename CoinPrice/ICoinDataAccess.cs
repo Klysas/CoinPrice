@@ -2,7 +2,7 @@
 
 namespace CoinPrice
 {
-	interface ICoinDataAccess
+	public interface ICoinDataAccess
 	{
 		/// <summary>
 		/// Retrieves information about specific coin.
