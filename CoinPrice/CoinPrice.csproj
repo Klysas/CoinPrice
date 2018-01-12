@@ -78,7 +78,6 @@
     <Compile Include="ApplicationViewModel.cs" />
     <Compile Include="CoinJsonItem.cs" />
     <Compile Include="CoinmarketcapAccess.cs" />
-    <Compile Include="CoinModel.cs" />
     <Compile Include="ContentView.xaml.cs">
       <DependentUpon>ContentView.xaml</DependentUpon>
     </Compile>
@@ -98,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPageViewModel.cs" />
-    <Compile Include="IUserCoinData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

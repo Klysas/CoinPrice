@@ -8,7 +8,15 @@ namespace CoinPrice
 		//	Variables
 		//========================================================
 
-		private List<CoinModel> coins;
+		private List<UserCoinData> coins;
+
+		// REMOVE
+		public ContentViewModel()
+		{
+			Coins = new List<UserCoinData>();
+
+			Coins.Add(new UserCoinData(new CoinmarketcapAccess()) { CoinName = "Bitcoin", CoinUrlName = "bitcoin", CurrentAmount = 0.2});
+		}
 
 		//========================================================
 		//	Properties
@@ -22,7 +30,7 @@ namespace CoinPrice
 			}
 		}
 
-		public List<CoinModel> Coins
+		public List<UserCoinData> Coins
 		{
 			get { return coins; }
 			set
