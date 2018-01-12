@@ -66,6 +66,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CoinEditView.xaml.cs">
+      <DependentUpon>CoinEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CoinEditViewModel.cs" />
     <Compile Include="UserCoinData.cs" />
     <Page Include="ApplicationView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -90,6 +94,10 @@
       <DependentUpon>ApplicationView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="CoinEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

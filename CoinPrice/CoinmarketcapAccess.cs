@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace CoinPrice
@@ -71,6 +72,16 @@ namespace CoinPrice
 			}
 
 			return item;
+		}
+
+		public async Task<UserCoinData> UpdateCoinDataAsync(UserCoinData userCoin)
+		{
+			var result = await GetCoinDataAsync(userCoin.CoinUrlName);
+
+			userCoin.CurrentPriceInEur = float.Parse(result.price_eur, CultureInfo.InvariantCulture);
+			userCoin.CurrentPriceInUSD = float.Parse(result.price_usd, CultureInfo.InvariantCulture);
+
+			return userCoin;
 		}
 	}
 }

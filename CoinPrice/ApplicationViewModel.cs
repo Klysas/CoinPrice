@@ -6,6 +6,16 @@ namespace CoinPrice
 {
 	public class ApplicationViewModel : ObservableObject
 	{
+		public enum Status
+		{
+			Save,
+			Cancel
+		}
+
+		//========================================================
+		//	Legacy
+		//========================================================
+
 		#region Fields
 
 		private ICommand _changePageCommand;
@@ -14,15 +24,6 @@ namespace CoinPrice
 		private List<IPageViewModel> _pageViewModels;
 
 		#endregion
-
-		public ApplicationViewModel()
-		{
-			// Add available pages
-			PageViewModels.Add(new ContentViewModel());
-
-			// Set starting page
-			CurrentPageViewModel = PageViewModels[0];
-		}
 
 		#region Properties / Commands
 
@@ -82,5 +83,76 @@ namespace CoinPrice
 		}
 
 		#endregion
+
+		//========================================================
+		//	Variables
+		//========================================================
+
+		private ICommand addCoinCommand;
+
+		private ContentViewModel content;
+		private CoinEditViewModel coinEdit;
+
+		delegate void HandleEditCoinDel(Status status);
+
+		//========================================================
+		//	Constructors
+		//========================================================
+
+		public ApplicationViewModel()
+		{
+			var handleEditCoinDel = new HandleEditCoinDel(HandleEditCoin);
+
+			content = new ContentViewModel();
+			coinEdit = new CoinEditViewModel(handleEditCoinDel);
+
+			// Add available pages
+			PageViewModels.Add(content);
+			PageViewModels.Add(coinEdit);
+
+			// Set starting page
+			CurrentPageViewModel = content;
+		}
+
+		//========================================================
+		//	Commands
+		//========================================================
+
+		public ICommand AddCoinCommand
+		{
+			get
+			{
+				if (addCoinCommand == null)
+				{
+					addCoinCommand = new RelayCommand(
+						param => AddCoin()
+					);
+				}
+				return addCoinCommand;
+			}
+		}
+
+		//========================================================
+		//	Methods
+		//========================================================
+
+		public void AddCoin()
+		{
+			coinEdit.UserCoin = null;
+			CurrentPageViewModel = coinEdit;
+		}
+
+		private void HandleEditCoin(Status status)
+		{
+			if (status == Status.Save)
+			{
+				content.Coins.Add(coinEdit.UserCoin);
+				CurrentPageViewModel = content;
+			}
+			else if (status == Status.Cancel)
+			{
+				CurrentPageViewModel = content;
+			}
+		}
 	}
 }

@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.Threading.Tasks;
-
-namespace CoinPrice
+﻿namespace CoinPrice
 {
+	/// <summary>
+	/// Holds data for specific cryptocurrency coin.
+	/// </summary>
 	public class UserCoinData : ObservableObject
 	{
 		//========================================================
@@ -11,8 +11,6 @@ namespace CoinPrice
 		//--------------------------------------------------------
 		//	Private
 		//--------------------------------------------------------
-
-		private ICoinDataAccess coinAccess;
 
 		private float boughtPriceInEur;
 		private float boughtPriceInUSD;
@@ -26,11 +24,9 @@ namespace CoinPrice
 		//	Constructors
 		//========================================================
 
-		public UserCoinData(ICoinDataAccess coinAccess)
+		public UserCoinData()
 		{
-			coinAccess.ThrowIfArgumentIsNull("coinAccess");
-
-			this.coinAccess = coinAccess;
+			// EMPTY
 		}
 
 		//========================================================
@@ -176,17 +172,6 @@ namespace CoinPrice
 			if (change >= 1) return change;
 			change = 1 - change;
 			return -change;
-		}
-
-		/// <summary>
-		/// Updates current prices.
-		/// </summary>
-		public async Task UpdateCurrentPrice()
-		{
-			var result = await coinAccess.GetCoinDataAsync(CoinUrlName);
-
-			CurrentPriceInEur = float.Parse(result.price_eur, CultureInfo.InvariantCulture);
-			CurrentPriceInUSD = float.Parse(result.price_usd, CultureInfo.InvariantCulture);
 		}
 	}
 }

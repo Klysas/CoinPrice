@@ -11,10 +11,5 @@ namespace CoinPrice
 		{
 			InitializeComponent();
 		}
-
-		private void ModifyCoin_Click(object sender, RoutedEventArgs e)
-		{
-			// TODO: Opens windows to modify(add/remove) coins.
-		}
 	}
 }

@@ -10,12 +10,13 @@ namespace CoinPrice
 
 		private List<UserCoinData> coins;
 
-		// REMOVE
+		//========================================================
+		//	Constructors
+		//========================================================
+
 		public ContentViewModel()
 		{
 			Coins = new List<UserCoinData>();
-
-			Coins.Add(new UserCoinData(new CoinmarketcapAccess()) { CoinName = "Bitcoin", CoinUrlName = "bitcoin", CurrentAmount = 0.2});
 		}
 
 		//========================================================
