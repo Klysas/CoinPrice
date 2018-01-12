@@ -5,13 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoinPrice"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Label Content="Name:"/>
-            <TextBox x:Name="CoinNameBox" Text="{Binding UserCoin.CoinName}" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="CoinNameBox" Text="{Binding UserCoin.CoinName}" VerticalAlignment="Top" Width="120" TextChanged="CoinNameBox_TextChanged"/>
             <Label Content="Search name:"/>
-            <TextBox x:Name="CoinUrlNameBox" Text="{Binding UserCoin.CoinUrlName}" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="CoinUrlNameBox" Text="{Binding UserCoin.CoinUrlName}" VerticalAlignment="Top" Width="120" TextChanged="CoinUrlNameBox_TextChanged"/>
+            <Button Content="{Binding CoinValid}" Command="{Binding Path=ValidateCoinCommand}" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Label Content="Amount:"/>

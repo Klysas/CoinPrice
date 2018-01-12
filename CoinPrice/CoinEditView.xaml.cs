@@ -20,9 +20,24 @@ namespace CoinPrice
 	/// </summary>
 	public partial class CoinEditView : UserControl
 	{
+		private bool coinUrlNameBoxModified = false;
+
 		public CoinEditView()
 		{
 			InitializeComponent();
+		}
+
+		private void CoinNameBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (!coinUrlNameBoxModified)
+			{
+				CoinUrlNameBox.Text = CoinNameBox.Text.ToLower();
+			}
+		}
+
+		private void CoinUrlNameBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (!CoinUrlNameBox.Text.Equals(CoinNameBox.Text.ToLower())) coinUrlNameBoxModified = true;
 		}
 	}
 }

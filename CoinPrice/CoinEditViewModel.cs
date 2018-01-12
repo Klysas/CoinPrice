@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CoinPrice
@@ -9,12 +10,14 @@ namespace CoinPrice
 		//	Fields
 		//========================================================
 
-		private UserCoinData userCoin;
-
+		private ICoinDataAccess coinAccess;
+		private bool coinValid;
 		private Delegate completeDelegate;
+		private UserCoinData userCoin;
 
 		private ICommand saveCommand;
 		private ICommand cancelCommand;
+		private ICommand validateCoinCommand;
 
 		//========================================================
 		//	Constructors
@@ -24,6 +27,7 @@ namespace CoinPrice
 		{
 			this.completeDelegate = completeDelegate;
 			UserCoin = new UserCoinData();
+			coinAccess = new CoinmarketcapAccess();
 		}
 
 		//========================================================
@@ -46,9 +50,23 @@ namespace CoinPrice
 				if (value != userCoin)
 				{
 					userCoin = value;
+					CoinValid = false;
 					if (value == null)
 						userCoin = new UserCoinData();
 					OnPropertyChanged("UserCoin");
+				}
+			}
+		}
+
+		public bool CoinValid
+		{
+			get { return coinValid; }
+			set
+			{
+				if (value != coinValid)
+				{
+					coinValid = value;
+					OnPropertyChanged("CoinValid");
 				}
 			}
 		}
@@ -85,6 +103,20 @@ namespace CoinPrice
 			}
 		}
 
+		public ICommand ValidateCoinCommand
+		{
+			get
+			{
+				if (validateCoinCommand == null)
+				{
+					validateCoinCommand = new RelayCommand(
+						param => ValidateCoinUrl()
+					);
+				}
+				return validateCoinCommand;
+			}
+		}
+
 		//========================================================
 		//	Methods
 		//========================================================
@@ -104,5 +136,23 @@ namespace CoinPrice
 			completeDelegate.DynamicInvoke(ApplicationViewModel.Status.Cancel);
 		}
 
+		private async Task<bool> IsCoinValid()
+		{
+			if (UserCoin.CoinUrlName.IsNullOrEmpty()) return false;
+
+			var result = await coinAccess.GetCoinDataAsync(UserCoin.CoinUrlName);
+
+			if (!result.error.IsNull() && result.error.Equals("id not found"))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		public async void ValidateCoinUrl()
+		{
+			CoinValid = await IsCoinValid();
+		}
 	}
 }
