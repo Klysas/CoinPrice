@@ -36,6 +36,12 @@
 		//	Public
 		//--------------------------------------------------------
 
+		public int Id
+		{
+			get;
+			set;
+		}
+
 		/// <summary>
 		/// Price for single unit in euros, when coins were bought.
 		/// </summary>

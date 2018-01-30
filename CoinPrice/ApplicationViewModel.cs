@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 
@@ -93,6 +94,8 @@ namespace CoinPrice
 		private ContentViewModel content;
 		private CoinEditViewModel coinEdit;
 
+		private SQLiteDatabase database;
+
 		delegate void HandleEditCoinDel(Status status);
 
 		//========================================================
@@ -101,9 +104,12 @@ namespace CoinPrice
 
 		public ApplicationViewModel()
 		{
+			database = new SQLiteDatabase();
+
 			var handleEditCoinDel = new HandleEditCoinDel(HandleEditCoin);
 
 			content = new ContentViewModel();
+			content.Coins = database.GetAllCoins();
 			coinEdit = new CoinEditViewModel(handleEditCoinDel);
 
 			// Add available pages
@@ -146,8 +152,16 @@ namespace CoinPrice
 		{
 			if (status == Status.Save)
 			{
-				content.Coins.Add(coinEdit.UserCoin);
-				CurrentPageViewModel = content;
+				if (database.AddCoin(coinEdit.UserCoin))
+				{
+					content.Coins.Add(coinEdit.UserCoin);
+					CurrentPageViewModel = content;
+				}
+				else
+				{
+					Console.WriteLine("Failed to save coin to database.");
+					// ERROR
+				}
 			}
 			else if (status == Status.Cancel)
 			{
