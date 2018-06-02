@@ -201,9 +201,9 @@
 		public float GetValueChange()
 		{
 			var change = GetCurrentValueInEur() / GetBoughtValueInEur();
-			if (change >= 1) return change;
+			if (change >= 1) return change * 100;
 			change = 1 - change;
-			return -change;
+			return -change * 100;
 		}
 	}
 }
