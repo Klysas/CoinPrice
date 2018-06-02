@@ -24,5 +24,16 @@ namespace CoinPrice
 		{
 			InitializeComponent();
 		}
+
+		private void DockPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			// Change to capturer view
+			var applicationViewModel = App.Current.MainWindow.DataContext as ApplicationViewModel;
+			if (applicationViewModel.IsNull())
+			{
+				// ERROR
+			}
+			applicationViewModel.CurrentlySelectedCoin = ((DockPanel)sender).DataContext as UserCoinData;
+		}
 	}
 }

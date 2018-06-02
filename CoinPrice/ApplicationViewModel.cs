@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,7 +11,14 @@ namespace CoinPrice
 	{
 		public enum Status
 		{
+			/// <summary>
+			/// Save already existing.
+			/// </summary>
 			Save,
+			/// <summary>
+			/// Save newly created.
+			/// </summary>
+			SaveNew,
 			Cancel
 		}
 
@@ -91,6 +99,8 @@ namespace CoinPrice
 		//========================================================
 
 		private ICommand addCoinCommand;
+		private ICommand modifyCoinCommand;
+		private ICommand removeCoinCommand;
 
 		private ContentViewModel content;
 		private CoinEditViewModel coinEdit;
@@ -99,6 +109,8 @@ namespace CoinPrice
 		private ICoinDataAccess coinAccess;
 
 		private bool running;
+
+		private UserCoinData currentlySelectedCoin;
 
 		delegate void HandleEditCoinDel(Status status);
 
@@ -118,7 +130,7 @@ namespace CoinPrice
 			App.Current.Exit += Current_Exit;
 
 			content = new ContentViewModel();
-			content.Coins = database.GetAllCoins();
+			content.Coins = new ObservableCollection<UserCoinData>(database.GetAllCoins());
 			Task.Run(() =>
 			{
 				while (running)
@@ -142,6 +154,23 @@ namespace CoinPrice
 		}
 
 		//========================================================
+		//	Properties
+		//========================================================
+
+		public UserCoinData CurrentlySelectedCoin
+		{
+			get { return currentlySelectedCoin; }
+			set
+			{
+				if (value != currentlySelectedCoin)
+				{
+					currentlySelectedCoin = value;
+					OnPropertyChanged("CurrentlySelectedCoin");
+				}
+			}
+		}
+
+		//========================================================
 		//	Commands
 		//========================================================
 
@@ -156,6 +185,34 @@ namespace CoinPrice
 					);
 				}
 				return addCoinCommand;
+			}
+		}
+
+		public ICommand ModifyCoinCommand
+		{
+			get
+			{
+				if (modifyCoinCommand == null)
+				{
+					modifyCoinCommand = new RelayCommand(
+						param => ModifyCoin()
+					);
+				}
+				return modifyCoinCommand;
+			}
+		}
+
+		public ICommand RemoveCoinCommand
+		{
+			get
+			{
+				if (removeCoinCommand == null)
+				{
+					removeCoinCommand = new RelayCommand(
+						param => RemoveCoin()
+					);
+				}
+				return removeCoinCommand;
 			}
 		}
 
@@ -193,11 +250,25 @@ namespace CoinPrice
 			CurrentPageViewModel = coinEdit;
 		}
 
+		public void ModifyCoin()
+		{
+			coinEdit.UserCoin = CurrentlySelectedCoin;
+			CurrentPageViewModel = coinEdit;
+		}
+
+		public void RemoveCoin()
+		{
+			if (CurrentlySelectedCoin == null)
+				return;
+			database.RemoveCoin(CurrentlySelectedCoin);
+			content.Coins.Remove(CurrentlySelectedCoin);
+		}
+
 		private async void HandleEditCoin(Status status)
 		{
-			if (status == Status.Save)
+			var coin = coinEdit.UserCoin;
+			if (status == Status.SaveNew)
 			{
-				var coin = coinEdit.UserCoin;
 				if (database.AddCoin(coin))
 				{
 					content.Coins.Add(coin);
@@ -208,6 +279,21 @@ namespace CoinPrice
 				else
 				{
 					Console.WriteLine("Failed to save coin to database.");
+					// ERROR
+				}
+			}
+			else if (status == Status.Save)
+			{
+				var update = database.UpdateCoin(coin);
+				if (update)
+				{
+					CurrentPageViewModel = content;
+					await coinAccess.UpdateCoinDataAsync(coin);
+					RefreshCoin(coin);
+				}
+				else
+				{
+					Console.WriteLine("Failed to update coin to database.");
 					// ERROR
 				}
 			}

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 
 namespace CoinPrice
 {
@@ -8,7 +8,7 @@ namespace CoinPrice
 		//	Variables
 		//========================================================
 
-		private List<UserCoinData> coins;
+		private ObservableCollection<UserCoinData> coins;
 
 		//========================================================
 		//	Constructors
@@ -16,7 +16,7 @@ namespace CoinPrice
 
 		public ContentViewModel()
 		{
-			Coins = new List<UserCoinData>();
+			coins = new ObservableCollection<UserCoinData>();
 		}
 
 		//========================================================
@@ -31,16 +31,20 @@ namespace CoinPrice
 			}
 		}
 
-		public List<UserCoinData> Coins
+		public ObservableCollection<UserCoinData> Coins
 		{
 			get { return coins; }
 			set
 			{
 				if (value != coins)
 				{
-					coins = value;
-					if(coins == null)
-						coins = new List<UserCoinData>();
+					if (value != null)
+					{
+						foreach (var coin in value)
+						{
+							coins.Add(coin);
+						}
+					}
 					OnPropertyChanged("Coins");
 				}
 			}

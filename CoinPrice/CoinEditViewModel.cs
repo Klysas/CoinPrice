@@ -15,6 +15,7 @@ namespace CoinPrice
 		private UserCoinData userCoin;
 
 		private bool coinValid;
+		private bool isNewCoin;
 
 		private ICommand saveCommand;
 		private ICommand cancelCommand;
@@ -29,6 +30,7 @@ namespace CoinPrice
 			this.completeDelegate = completeDelegate;
 			this.coinAccess = coinAccess;
 			UserCoin = new UserCoinData();
+			isNewCoin = false;
 		}
 
 		//========================================================
@@ -54,6 +56,14 @@ namespace CoinPrice
 					CoinValid = false;
 					if (value == null)
 						userCoin = new UserCoinData();
+					if (userCoin.IsEmpty())
+					{
+						isNewCoin = true;
+					}
+					else
+					{
+						isNewCoin = false;
+					}
 					OnPropertyChanged("UserCoin");
 				}
 			}
@@ -129,7 +139,15 @@ namespace CoinPrice
 		private void Save()
 		{
 			// TODO: validate all fields.
-			completeDelegate.DynamicInvoke(ApplicationViewModel.Status.Save);
+			if (isNewCoin)
+			{
+				completeDelegate.DynamicInvoke(ApplicationViewModel.Status.SaveNew);
+			}
+			else
+			{
+				completeDelegate.DynamicInvoke(ApplicationViewModel.Status.Save);
+			}
+			isNewCoin = false;
 		}
 
 		private void Cancel()

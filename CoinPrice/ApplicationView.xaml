@@ -23,9 +23,32 @@
 
 		<DockPanel.ContextMenu>
 			<ContextMenu >
+				<!-- Add coin -->
 				<MenuItem Header="Add new coin" Command="{Binding Path=AddCoinCommand}"/>
-				<MenuItem Header="Modify coin: Name" />
-				<MenuItem Header="Remove coin: Name" />
+				
+				<!-- Modify coin -->
+				<MenuItem Header="{Binding}" Command="{Binding Path=ModifyCoinCommand}">
+					<MenuItem.HeaderTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Modify coin: "/>
+								<TextBlock Text="{Binding Path=CurrentlySelectedCoin.CoinName}"/>
+							</StackPanel>
+						</DataTemplate>
+					</MenuItem.HeaderTemplate>
+				</MenuItem>
+				
+				<!-- Remove coin -->
+				<MenuItem Header="{Binding}" Command="{Binding Path=RemoveCoinCommand}">
+					<MenuItem.HeaderTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Remove coin: "/>
+								<TextBlock Text="{Binding Path=CurrentlySelectedCoin.CoinName}"/>
+							</StackPanel>
+						</DataTemplate>
+					</MenuItem.HeaderTemplate>
+				</MenuItem>
 			</ContextMenu>
 		</DockPanel.ContextMenu>
 

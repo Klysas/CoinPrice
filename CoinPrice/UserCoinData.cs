@@ -26,7 +26,7 @@
 
 		public UserCoinData()
 		{
-			// EMPTY
+			coinName = string.Empty;
 		}
 
 		//========================================================
@@ -187,6 +187,14 @@
 		//--------------------------------------------------------
 		//	Public
 		//--------------------------------------------------------
+
+		public bool IsEmpty()
+		{
+			if (CoinName == string.Empty)
+				return true;
+
+			return false;
+		}
 
 		public float GetBoughtValueInEur()
 		{
