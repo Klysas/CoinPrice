@@ -198,7 +198,6 @@
 			return (float)(CurrentPriceInEur * CurrentAmount);
 		}
 
-		// Is change different in USD than in EUR ?
 		public float GetValueChange()
 		{
 			var change = GetCurrentValueInEur() / GetBoughtValueInEur();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CoinPrice
@@ -95,6 +96,9 @@ namespace CoinPrice
 		private CoinEditViewModel coinEdit;
 
 		private SQLiteDatabase database;
+		private ICoinDataAccess coinAccess;
+
+		private bool running;
 
 		delegate void HandleEditCoinDel(Status status);
 
@@ -104,13 +108,34 @@ namespace CoinPrice
 
 		public ApplicationViewModel()
 		{
+			running = true;
+
 			database = new SQLiteDatabase();
+			coinAccess = new CoinmarketcapAccess();
 
 			var handleEditCoinDel = new HandleEditCoinDel(HandleEditCoin);
 
+			App.Current.Exit += Current_Exit;
+
 			content = new ContentViewModel();
 			content.Coins = database.GetAllCoins();
-			coinEdit = new CoinEditViewModel(handleEditCoinDel);
+			Task.Run(() =>
+			{
+				while (running)
+				{
+					foreach (var coin in content.Coins)
+					{
+						coinAccess.UpdateCoinDataAsync(coin).Wait();
+
+						// Following are set to trigger notifications that those properties have changed.
+						coin.CurrentValueInEur = -1;
+						coin.BoughtValueInEur = -1;
+						coin.ValueChange = -1;
+					}
+					Task.Delay(600000).Wait();
+				}
+			});
+			coinEdit = new CoinEditViewModel(handleEditCoinDel, coinAccess);
 
 			// Add available pages
 			PageViewModels.Add(content);
@@ -139,6 +164,15 @@ namespace CoinPrice
 		}
 
 		//========================================================
+		//	Handlers
+		//========================================================
+
+		private void Current_Exit(object sender, System.Windows.ExitEventArgs e)
+		{
+			running = false;
+		}
+
+		//========================================================
 		//	Methods
 		//========================================================
 
@@ -148,7 +182,7 @@ namespace CoinPrice
 			CurrentPageViewModel = coinEdit;
 		}
 
-		private void HandleEditCoin(Status status)
+		private async void HandleEditCoin(Status status)
 		{
 			if (status == Status.Save)
 			{
@@ -156,6 +190,7 @@ namespace CoinPrice
 				{
 					content.Coins.Add(coinEdit.UserCoin);
 					CurrentPageViewModel = content;
+					await coinAccess.UpdateCoinDataAsync(coinEdit.UserCoin);
 				}
 				else
 				{

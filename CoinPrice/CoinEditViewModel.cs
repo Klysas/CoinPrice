@@ -11,9 +11,10 @@ namespace CoinPrice
 		//========================================================
 
 		private ICoinDataAccess coinAccess;
-		private bool coinValid;
 		private Delegate completeDelegate;
 		private UserCoinData userCoin;
+
+		private bool coinValid;
 
 		private ICommand saveCommand;
 		private ICommand cancelCommand;
@@ -23,11 +24,11 @@ namespace CoinPrice
 		//	Constructors
 		//========================================================
 
-		public CoinEditViewModel(Delegate completeDelegate)
+		public CoinEditViewModel(Delegate completeDelegate, ICoinDataAccess coinAccess)
 		{
 			this.completeDelegate = completeDelegate;
+			this.coinAccess = coinAccess;
 			UserCoin = new UserCoinData();
-			coinAccess = new CoinmarketcapAccess();
 		}
 
 		//========================================================
@@ -138,7 +139,8 @@ namespace CoinPrice
 
 		private async Task<bool> IsCoinValid()
 		{
-			if (UserCoin.CoinUrlName.IsNullOrEmpty()) return false;
+			if (UserCoin.CoinUrlName.IsNullOrEmpty())
+				return false;
 
 			var result = await coinAccess.GetCoinDataAsync(UserCoin.CoinUrlName);
 
