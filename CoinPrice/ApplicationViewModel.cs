@@ -126,11 +126,7 @@ namespace CoinPrice
 					foreach (var coin in content.Coins)
 					{
 						coinAccess.UpdateCoinDataAsync(coin).Wait();
-
-						// Following are set to trigger notifications that those properties have changed.
-						coin.CurrentValueInEur = -1;
-						coin.BoughtValueInEur = -1;
-						coin.ValueChange = -1;
+						RefreshCoin(coin);
 					}
 					Task.Delay(600000).Wait();
 				}
@@ -175,6 +171,21 @@ namespace CoinPrice
 		//========================================================
 		//	Methods
 		//========================================================
+		//--------------------------------------------------------
+		//	Private
+		//--------------------------------------------------------
+
+		private void RefreshCoin(UserCoinData coin)
+		{
+			// Following are set to trigger notifications that those properties have changed.
+			coin.CurrentValueInEur = -1;
+			coin.BoughtValueInEur = -1;
+			coin.ValueChange = -1;
+		}
+
+		//--------------------------------------------------------
+		//	Public
+		//--------------------------------------------------------
 
 		public void AddCoin()
 		{
@@ -186,11 +197,13 @@ namespace CoinPrice
 		{
 			if (status == Status.Save)
 			{
-				if (database.AddCoin(coinEdit.UserCoin))
+				var coin = coinEdit.UserCoin;
+				if (database.AddCoin(coin))
 				{
-					content.Coins.Add(coinEdit.UserCoin);
+					content.Coins.Add(coin);
 					CurrentPageViewModel = content;
-					await coinAccess.UpdateCoinDataAsync(coinEdit.UserCoin);
+					await coinAccess.UpdateCoinDataAsync(coin);
+					RefreshCoin(coin);
 				}
 				else
 				{
