@@ -39,6 +39,8 @@ namespace CoinPrice
 				if (value != coins)
 				{
 					coins = value;
+					if(coins == null)
+						coins = new List<UserCoinData>();
 					OnPropertyChanged("Coins");
 				}
 			}

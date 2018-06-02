@@ -12,7 +12,7 @@
 		<!-- UserCoin -->
 		<DataTemplate DataType="{x:Type local:UserCoinData}">
 			<Border BorderBrush="Black" BorderThickness="1" Margin="2,1,2,2">
-				<local:UserCoinView Content="{Binding CurrentUserCoin}"/>
+				<local:UserCoinView/>
 			</Border>
 		</DataTemplate>
 
