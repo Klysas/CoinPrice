@@ -9,17 +9,18 @@
 
 	<UserControl.Resources>
 
+		<!-- UserCoin -->
 		<DataTemplate DataType="{x:Type local:UserCoinData}">
-			<Border BorderBrush="Black" BorderThickness="1" Margin="0,0,1,1">
-				<DockPanel HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="200">
-                    <TextBlock Text="{Binding CoinName}" Margin="10,0" HorizontalAlignment="Center"/>
-				</DockPanel>
+			<Border BorderBrush="Black" BorderThickness="1" Margin="2,1,2,2">
+				<local:UserCoinView Content="{Binding CurrentUserCoin}"/>
 			</Border>
 		</DataTemplate>
 
 	</UserControl.Resources>
 
+	<!-- CONTENT -->
 	<DockPanel>
 		<ItemsControl ItemsSource="{Binding Coins}"/>
 	</DockPanel>
+
 </UserControl>

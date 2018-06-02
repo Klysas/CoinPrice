@@ -7,26 +7,29 @@
         mc:Ignorable="d"
         Title="CoinPrice" Height="350" Width="525">
 
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type local:ContentViewModel}">
-            <local:ContentView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:CoinEditViewModel}">
-            <local:CoinEditView />
-        </DataTemplate>
-    </Window.Resources>
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type local:ContentViewModel}">
+			<local:ContentView />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type local:CoinEditViewModel}">
+			<local:CoinEditView />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type local:UserCoinViewModel}">
+			<local:UserCoinView />
+		</DataTemplate>
+	</Window.Resources>
 
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+	<DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
 
-        <DockPanel.ContextMenu>
-            <ContextMenu >
-                <MenuItem Header="Add new coin" Command="{Binding Path=AddCoinCommand}"/>
-                <MenuItem Header="Modify coin: Name" />
-                <MenuItem Header="Remove coin: Name" />
-            </ContextMenu>
-        </DockPanel.ContextMenu>
+		<DockPanel.ContextMenu>
+			<ContextMenu >
+				<MenuItem Header="Add new coin" Command="{Binding Path=AddCoinCommand}"/>
+				<MenuItem Header="Modify coin: Name" />
+				<MenuItem Header="Remove coin: Name" />
+			</ContextMenu>
+		</DockPanel.ContextMenu>
 
-        <ContentControl Content="{Binding CurrentPageViewModel}" />
+		<ContentControl Content="{Binding CurrentPageViewModel}" />
 
-    </DockPanel>
+	</DockPanel>
 </Window>

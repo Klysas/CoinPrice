@@ -58,6 +58,15 @@
 			}
 		}
 
+		public float BoughtValueInEur
+		{
+			get { return GetBoughtValueInEur(); }
+			set
+			{
+				OnPropertyChanged("BoughtValueInEur");
+			}
+		}
+
 		/// <summary>
 		/// Price for single unit in US dollars, when coins were bought.
 		/// </summary>
@@ -151,6 +160,24 @@
 					currentPriceInUSD = value;
 					OnPropertyChanged("CurrentPriceInUSD");
 				}
+			}
+		}
+
+		public float CurrentValueInEur
+		{
+			get { return GetCurrentValueInEur(); }
+			set
+			{
+				OnPropertyChanged("CurrentValueInEur");
+			}
+		}
+
+		public float ValueChange
+		{
+			get { return GetValueChange(); }
+			set
+			{
+				OnPropertyChanged("ValueChange");
 			}
 		}
 

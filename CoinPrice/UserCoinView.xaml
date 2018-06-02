@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="CoinPrice.UserCoinView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoinPrice"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+	<DockPanel HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,5">
+		<StackPanel Orientation="Vertical">
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<TextBlock FontSize="20">
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}{0} {1}%">
+							<Binding Path="CoinName" />
+							<Binding Path="ValueChange" />
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<TextBlock>
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}Amount: {0}">
+							<Binding Path="CurrentAmount" />
+							</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal">
+				<TextBlock>
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}Bought: {0}&#x09;&#x09;Value: {1}">
+							<Binding Path="BoughtPriceInEur" />
+							<Binding Path="BoughtValueInEur" />
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+			</StackPanel>
+			
+			<StackPanel Orientation="Horizontal">
+				<TextBlock>
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}Current: {0}&#x09;&#x09;Value: {1}">
+							<Binding Path="CurrentPriceInEur" />
+							<Binding Path="CurrentValueInEur" />
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+			</StackPanel>
+
+		</StackPanel>
+	</DockPanel>
+</UserControl>
