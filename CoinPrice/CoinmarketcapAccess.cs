@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+
 using RestSharp;
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,11 +17,12 @@ namespace CoinPrice
 		//========================================================
 		//	Variables
 		//========================================================
+
+		const string CoinmarketcapApiSite = "https://api.coinmarketcap.com/v1/ticker/";
+
 		//--------------------------------------------------------
 		//	Private
 		//--------------------------------------------------------
-
-		private const string CoinmarketcapApiSite = "https://api.coinmarketcap.com/v1/ticker/";
 
 		private RestClient client;
 
@@ -48,7 +51,8 @@ namespace CoinPrice
 
 		public async Task<CoinJsonItem> GetCoinDataAsync(string coinName)
 		{
-			if (string.IsNullOrEmpty(coinName)) throw new ArgumentException("coinName parameter is null or empty.");
+			if (string.IsNullOrEmpty(coinName))
+				throw new ArgumentException("coinName parameter is null or empty.");
 
 			var request = new RestRequest();
 			request.RequestFormat = RestSharp.DataFormat.Json;
